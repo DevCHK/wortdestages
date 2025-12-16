@@ -6,100 +6,97 @@
 <title>Wort des Tages</title>
 <style>
   :root {
-    --bg-color: #ffffff;
-    --text-color: #111111;
-    --accent-color: #007acc;
-    --label-color: #555555;
-    --card-bg: #f9f9f9;
-    --card-shadow: rgba(0, 0, 0, 0.1);
+    --bg: #f8f9fa;
+    --text: #111;
+    --card-bg: #fff;
+    --label: #555;
+    --accent: #007acc;
+    --card-shadow: rgba(0,0,0,0.05);
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg-color: #1e1e1e;
-      --text-color: #f0f0f0;
-      --accent-color: #4ea1f3;
-      --label-color: #cccccc;
-      --card-bg: #2a2a2a;
-      --card-shadow: rgba(0, 0, 0, 0.5);
+      --bg: #111;
+      --text: #f0f0f0;
+      --card-bg: #1f1f1f;
+      --label: #bbb;
+      --accent: #4ea1f3;
+      --card-shadow: rgba(0,0,0,0.5);
     }
   }
 
   body {
+    margin: 0;
     font-family: "Helvetica Neue", Arial, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: var(--bg);
+    color: var(--text);
+    padding: 1rem;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    margin: 0;
-    padding: 2em 1em;
+  }
+
+  .grid {
+    display: grid;
+    gap: 1rem;
+    width: 100%;
+    max-width: 600px;
   }
 
   .card {
     background-color: var(--card-bg);
-    box-shadow: 0 4px 15px var(--card-shadow);
-    border-radius: 12px;
-    padding: 2em 1.5em;
-    max-width: 600px;
-    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px var(--card-shadow);
+    padding: 1.5rem;
     text-align: center;
   }
 
   h1 {
-    font-size: 2em;
-    margin-bottom: 1.5em;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
   }
 
   #word {
-    font-size: 2.8em;
-    font-weight: 700;
-    color: var(--accent-color);
-    margin: 0.8em 0 1.2em 0;
+    font-size: 2.4rem;
+    font-weight: bold;
+    color: var(--accent);
+    margin: 0.5rem 0 1rem 0;
   }
 
   .label {
     font-weight: 600;
-    color: var(--label-color);
-    margin-top: 1em;
-    margin-bottom: 0.3em;
+    color: var(--label);
+    margin-top: 0.8rem;
+    margin-bottom: 0.2rem;
   }
 
   #meaning, #example {
-    font-size: 1.2em;
-    margin-bottom: 1.2em;
-    line-height: 1.5;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
   }
 
-  @media (max-width: 480px) {
-    h1 {
-      font-size: 1.8em;
-      margin-bottom: 1em;
-    }
-    #word {
-      font-size: 2.4em;
-      margin: 0.6em 0 1em 0;
-    }
-    #meaning, #example {
-      font-size: 1.05em;
-      margin-bottom: 1em;
-    }
-    .card {
-      padding: 1.5em 1em;
-    }
+  @media(min-width:600px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media(max-width:480px) {
+    h1 { font-size: 1.5rem; }
+    #word { font-size: 2rem; }
+    #meaning, #example { font-size: 1rem; }
+    .card { padding: 1rem; }
   }
 </style>
-
 </head>
 <body>
-  <div class="card">
-    <h1>Wort des Tages</h1>
-    <div id="word"></div>
-    <div class="label">Bedeutung:</div>
-    <div id="meaning"></div>
-    <div class="label">Beispielsatz:</div>
-    <div id="example"></div>
+  <div class="grid">
+    <div class="card">
+      <h1>Wort des Tages</h1>
+      <div id="word"></div>
+      <div class="label">Bedeutung:</div>
+      <div id="meaning"></div>
+      <div class="label">Beispielsatz:</div>
+      <div id="example"></div>
+    </div>
   </div>
 </body>
 
