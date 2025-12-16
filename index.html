@@ -7,13 +7,12 @@
   :root {
     --bg-color: #ffffff;
     --text-color: #000000;
-    --accent-color: #007acc;
   }
+
   @media (prefers-color-scheme: dark) {
     :root {
       --bg-color: #1e1e1e;
       --text-color: #f0f0f0;
-      --accent-color: #4ea1f3;
     }
   }
 
@@ -29,22 +28,20 @@
 
   h1 {
     text-align: center;
-    font-size: 2.2em;
+    font-size: 2em;
     margin-bottom: 1em;
   }
 
   #word {
-    font-size: 2.5em;
+    font-size: 2.2em;
     font-weight: bold;
     margin-top: 1em;
-    color: var(--accent-color);
     text-align: center;
   }
 
   .label {
     font-weight: bold;
-    margin-top: 1.2em;
-    font-size: 1.1em;
+    margin-top: 1em;
   }
 
   #meaning, #example {
@@ -53,37 +50,37 @@
   }
 
   @media (max-width: 768px) {
-    h1 {
-      font-size: 2em;
-    }
-    #word {
-      font-size: 2em;
-    }
-    .label, #meaning, #example {
-      font-size: 1em;
-    }
     body {
       margin: 1.5em;
       padding: 0 1em;
     }
-  }
-
-  @media (max-width: 480px) {
     h1 {
       font-size: 1.8em;
     }
     #word {
-      font-size: 1.7em;
-    }
-    .label {
-      font-size: 0.95em;
+      font-size: 2em;
     }
     #meaning, #example {
-      font-size: 0.95em;
+      font-size: 1.15em;
     }
+  }
+
+  @media (max-width: 480px) {
     body {
       margin: 1em;
       padding: 0 0.8em;
+    }
+    h1 {
+      font-size: 1.6em;
+    }
+    #word {
+      font-size: 1.8em;
+    }
+    .label {
+      font-size: 1em;
+    }
+    #meaning, #example {
+      font-size: 1.1em;
     }
   }
 </style>
@@ -107,7 +104,6 @@ fetch('words.json')
     const stored = localStorage.getItem('wordOfDay');
     let data = stored ? JSON.parse(stored) : { date: "", usedIndices: [], jsonLength: words.length };
 
-    // Prüfen, ob JSON sich geändert hat
     if (data.jsonLength !== words.length) {
       data.usedIndices = [];
       data.date = "";
