@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>Wort des Tages</title>
 <style>
@@ -9,6 +10,8 @@
     --text-color: #111111;
     --accent-color: #007acc;
     --label-color: #555555;
+    --card-bg: #f9f9f9;
+    --card-shadow: rgba(0, 0, 0, 0.1);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -17,31 +20,43 @@
       --text-color: #f0f0f0;
       --accent-color: #4ea1f3;
       --label-color: #cccccc;
+      --card-bg: #2a2a2a;
+      --card-shadow: rgba(0, 0, 0, 0.5);
     }
   }
 
   body {
     font-family: "Helvetica Neue", Arial, sans-serif;
-    max-width: 600px;
-    margin: 2em auto;
-    padding: 0 1em;
     background-color: var(--bg-color);
     color: var(--text-color);
-    line-height: 1.5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 2em 1em;
+  }
+
+  .card {
+    background-color: var(--card-bg);
+    box-shadow: 0 4px 15px var(--card-shadow);
+    border-radius: 12px;
+    padding: 2em 1.5em;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
   }
 
   h1 {
-    text-align: center;
     font-size: 2em;
-    margin-bottom: 1em;
+    margin-bottom: 1.5em;
   }
 
   #word {
-    font-size: 2.4em;
+    font-size: 2.8em;
     font-weight: 700;
-    text-align: center;
     color: var(--accent-color);
-    margin: 1em 0;
+    margin: 0.8em 0 1.2em 0;
   }
 
   .label {
@@ -52,35 +67,41 @@
   }
 
   #meaning, #example {
-    font-size: 1.1em;
-    margin-bottom: 1em;
+    font-size: 1.2em;
+    margin-bottom: 1.2em;
+    line-height: 1.5;
   }
 
   @media (max-width: 480px) {
     h1 {
       font-size: 1.8em;
+      margin-bottom: 1em;
     }
     #word {
-      font-size: 2em;
+      font-size: 2.4em;
+      margin: 0.6em 0 1em 0;
     }
     #meaning, #example {
-      font-size: 1em;
+      font-size: 1.05em;
+      margin-bottom: 1em;
     }
-    body {
-      margin: 1em;
+    .card {
+      padding: 1.5em 1em;
     }
   }
 </style>
+
 </head>
 <body>
-<h1>Wort des Tages</h1>
-<div id="word"></div>
-
-<div class="label">Bedeutung:</div>
-<div id="meaning"></div>
-
-<div class="label">Beispielsatz:</div>
-<div id="example"></div>
+  <div class="card">
+    <h1>Wort des Tages</h1>
+    <div id="word"></div>
+    <div class="label">Bedeutung:</div>
+    <div id="meaning"></div>
+    <div class="label">Beispielsatz:</div>
+    <div id="example"></div>
+  </div>
+</body>
 
 <script>
 fetch('words.json')
