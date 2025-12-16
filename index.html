@@ -1,94 +1,52 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>Wort des Tages</title>
 <style>
   :root {
     --bg-color: #ffffff;
     --text-color: #000000;
+    --accent-color: #007acc;
   }
-
   @media (prefers-color-scheme: dark) {
     :root {
       --bg-color: #1e1e1e;
       --text-color: #f0f0f0;
+      --accent-color: #4ea1f3;
     }
   }
 
   body {
     font-family: Arial, sans-serif;
-    max-width: 700px;
+    max-width: 600px;
     margin: 2em auto;
     background-color: var(--bg-color);
     color: var(--text-color);
-    padding: 0 1.5em;
-    line-height: 1.6;
+    padding: 0 1em;
   }
 
-  h1 {
-    text-align: center;
-    font-size: 2em;
-    margin-bottom: 1em;
-  }
+  h1 { text-align: center; }
 
   #word {
-    font-size: 2.2em;
+    font-size: 2em;
     font-weight: bold;
     margin-top: 1em;
-    text-align: center;
+    color: var(--accent-color);
   }
 
-  .label {
-    font-weight: bold;
-    margin-top: 1em;
-  }
+  .label { font-weight: bold; margin-top: 1em; }
 
-  #meaning, #example {
-    margin-top: 0.5em;
-    font-size: 1.1em;
-  }
-
-  @media (max-width: 768px) {
-    body {
-      margin: 1.5em;
-      padding: 0 1em;
-    }
-    h1 {
-      font-size: 1.8em;
-    }
-    #word {
-      font-size: 2em;
-    }
-    #meaning, #example {
-      font-size: 1.15em;
-    }
-  }
+  #meaning, #example { margin-top: 0.3em; }
 
   @media (max-width: 480px) {
-    body {
-      margin: 1em;
-      padding: 0 0.8em;
-    }
-    h1 {
-      font-size: 1.6em;
-    }
-    #word {
-      font-size: 1.8em;
-    }
-    .label {
-      font-size: 1em;
-    }
-    #meaning, #example {
-      font-size: 1.1em;
-    }
+    #word { font-size: 1.8em; }
+    body { margin: 1em; }
   }
 </style>
 </head>
 <body>
 <h1>Wort des Tages</h1>
-
 <div id="word"></div>
 
 <div class="label">Bedeutung:</div>
@@ -101,33 +59,17 @@
 fetch('words.json')
   .then(res => res.json())
   .then(words => {
-    const today = new Date().toISOString().split('T')[0];
-    const stored = localStorage.getItem('wordOfDay');
-    let data = stored ? JSON.parse(stored) : { date: "", usedIndices: [], jsonLength: words.length };
+    // Heutiges Datum als YYYYMMDD in Zahl umwandeln
+    const today = new Date();
+    const dateNum = today.getFullYear()*10000 + (today.getMonth()+1)*100 + today.getDate();
 
-    if (data.jsonLength !== words.length) {
-      data.usedIndices = [];
-      data.date = "";
-      data.jsonLength = words.length;
-    }
+    // Deterministischer Index für heutiges Wort
+    const index = dateNum % words.length;
 
-    let index;
-    if (data.date === today) {
-      index = data.index;
-    } else {
-      let available = words.map((_,i) => i).filter(i => !data.usedIndices.includes(i));
-      if (available.length === 0) data.usedIndices = [];
-      available = words.map((_,i) => i).filter(i => !data.usedIndices.includes(i));
-      index = available[Math.floor(Math.random() * available.length)];
-      data.index = index;
-      data.date = today;
-      data.usedIndices.push(index);
-      localStorage.setItem('wordOfDay', JSON.stringify(data));
-    }
-
-    document.getElementById('word').textContent = words[index].word;
-    document.getElementById('meaning').textContent = words[index].meaning;
-    document.getElementById('example').textContent = words[index].example;
+    const word = words[index];
+    document.getElementById('word').textContent = word.word;
+    document.getElementById('meaning').textContent = word.meaning;
+    document.getElementById('example').textContent = word.example;
   })
   .catch(err => console.error("Fehler beim Laden der Wörter:", err));
 </script>
