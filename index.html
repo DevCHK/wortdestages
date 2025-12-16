@@ -4,16 +4,66 @@
 <meta charset="UTF-8">
 <title>Wort des Tages</title>
 <style>
-  body { font-family: Arial, sans-serif; max-width: 600px; margin: 2em auto; }
-  h1 { text-align: center; }
-  #word { font-size: 1.8em; font-weight: bold; margin-top: 1em; }
-  #meaning, #example { margin-top: 0.5em; }
+  :root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --accent-color: #007acc;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-color: #1e1e1e;
+      --text-color: #f0f0f0;
+      --accent-color: #4ea1f3;
+    }
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 2em auto;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 0 1em;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  #word {
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 1em;
+    color: var(--accent-color);
+  }
+
+  .label {
+    font-weight: bold;
+    margin-top: 1em;
+  }
+
+  #meaning, #example {
+    margin-top: 0.3em;
+  }
+
+  @media (max-width: 480px) {
+    #word {
+      font-size: 1.6em;
+    }
+    body {
+      margin: 1em;
+    }
+  }
 </style>
 </head>
 <body>
 <h1>Wort des Tages</h1>
 <div id="word"></div>
+
+<div class="label">Bedeutung:</div>
 <div id="meaning"></div>
+
+<div class="label">Beispielsatz:</div>
 <div id="example"></div>
 
 <script>
