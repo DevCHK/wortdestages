@@ -86,13 +86,17 @@
 fetch('words.json')
   .then(res => res.json())
   .then(words => {
-    // Tagesindex basierend auf Datum
+    // Heutiges Datum als YYYYMMDD in Zahl umwandeln
     const today = new Date();
-    const index = today.getDate() % words.length;
+    const dateNum = today.getFullYear()*10000 + (today.getMonth()+1)*100 + today.getDate();
 
-    document.getElementById('word').textContent = words[index].word;
-    document.getElementById('meaning').textContent = words[index].meaning;
-    document.getElementById('example').textContent = words[index].example;
+    // Deterministischer Index für heutiges Wort
+    const index = dateNum % words.length;
+
+    const word = words[index];
+    document.getElementById('word').textContent = word.word;
+    document.getElementById('meaning').textContent = word.meaning;
+    document.getElementById('example').textContent = word.example;
   })
   .catch(err => console.error("Fehler beim Laden der Wörter:", err));
 </script>
