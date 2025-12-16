@@ -34,21 +34,22 @@
     display: flex;
     justify-content: center;
   }
-
+  
   .grid {
-    display: grid;
-    gap: 1rem;
+    display: flex;
+    justify-content: center; /* Karte zentrieren */
     width: 100%;
-    max-width: 600px;
   }
 
   .card {
-    background-color: var(--card-bg);
-    border-radius: 10px;
-    box-shadow: 0 2px 8px var(--card-shadow);
-    padding: 1.5rem;
-    text-align: left;
-  }
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px var(--card-shadow);
+  padding: 2rem;
+  max-width: 800px; /* größer auf Desktop */
+  width: 100%;
+  text-align: center; /* Überschrift und Wort zentriert */
+}
 
   h1 {
     font-size: 1.8rem;
@@ -62,11 +63,10 @@
     margin: 0.5rem 0 1rem 0;
   }
 
-  .label {
-    font-weight: 600;
-    color: var(--label);
-    margin-top: 0.8rem;
-    margin-bottom: 0.2rem;
+    .label,
+  #meaning,
+  #example {
+    text-align: left; /* Definition und Beispielsatz linksbündig */
   }
 
   #meaning, #example {
@@ -80,11 +80,11 @@
   }
 
   @media(max-width:480px) {
-    h1 { font-size: 1.5rem; }
-    #word { font-size: 2rem; }
-    #meaning, #example { font-size: 1rem; }
-    .card { padding: 1rem; }
+  .card {
+    padding: 1rem;
+    max-width: 100%; /* passt sich dem Handy an */
   }
+}
 </style>
 </head>
 <body>
