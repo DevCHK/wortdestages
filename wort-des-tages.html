@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Wort des Tages</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: 2em auto; }
+  h1 { text-align: center; }
+  #word { font-size: 1.8em; font-weight: bold; margin-top: 1em; }
+  #meaning, #example { margin-top: 0.5em; }
+</style>
+</head>
+<body>
+<h1>Wort des Tages</h1>
+<div id="word"></div>
+<div id="meaning"></div>
+<div id="example"></div>
+
+<script>
+fetch('words.json')
+  .then(res => res.json())
+  .then(words => {
+
+    // Hilfsfunktion: heutiges Datum als YYYY-MM-DD
+    const getToday = () => new Date().toISOString().split('T')[0];
+    const today = getToday();
+
+    // Prüfen, ob schon Wort für heute gespeichert
+    const stored = localStorage.getItem('wordOfDay');
+    const data = stored ? JSON.parse(stored) : { date: "", usedIndices: [] };
+
+    let index;
+    if (data.date === today) {
+        // Bereits heute generiert
+        index = data.index;
+    } else {
+        // Neues Wort wählen
+        let availableIndices = words.map((_,i) => i).filter(i => !data.usedIndices.includes(i));
+        if (availableIndices.length === 0) data.usedIndices = []; // Alles durch -> Reset
+        availableIndices = words.map((_,i) => i).filter(i => !data.usedIndices.includes(i));
+        index = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+        data.index = index;
+        data.date = today;
+        data.usedIndices.push(index);
+        localStorage.setItem('wordOfDay', JSON.stringify(data));
+    }
+
+    // Wort anzeigen
+    document.getElementById('word').textContent = words[index].word;
+    document.getElementById('meaning').textContent = words[index].meaning;
+    document.getElementById('example').textContent = words[index].example;
+
+  })
+  .catch(err => console.error("Fehler beim Laden der Wörter:", err));
+</script>
+</body>
+</html>
