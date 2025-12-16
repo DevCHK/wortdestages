@@ -8,6 +8,7 @@
   h1 { text-align: center; }
   #word { font-size: 1.8em; font-weight: bold; margin-top: 1em; }
   #meaning, #example { margin-top: 0.5em; }
+  #debug { margin-top: 2em; font-size: 0.8em; color: gray; }
 </style>
 </head>
 <body>
@@ -16,10 +17,16 @@
 <div id="meaning"></div>
 <div id="example"></div>
 
+<div id="debug"></div>
+
 <script>
 fetch('words.json')
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error(`HTTP Fehler: ${res.status}`);
+    return res.json();
+  })
   .then(words => {
+    console.log("JSON geladen:", words);
 
     // Hilfsfunktion: heutiges Datum als YYYY-MM-DD
     const getToday = () => new Date().toISOString().split('T')[0];
@@ -28,21 +35,23 @@ fetch('words.json')
     // Prüfen, ob schon Wort für heute gespeichert
     const stored = localStorage.getItem('wordOfDay');
     const data = stored ? JSON.parse(stored) : { date: "", usedIndices: [] };
+    console.log("LocalStorage:", data);
 
     let index;
-    if (data.date === today) {
+    if (data.date === today && data.index !== undefined) {
         // Bereits heute generiert
         index = data.index;
     } else {
         // Neues Wort wählen
         let availableIndices = words.map((_,i) => i).filter(i => !data.usedIndices.includes(i));
-        if (availableIndices.length === 0) data.usedIndices = []; // Alles durch -> Reset
+        if (availableIndices.length === 0) data.usedIndices = [];
         availableIndices = words.map((_,i) => i).filter(i => !data.usedIndices.includes(i));
         index = availableIndices[Math.floor(Math.random() * availableIndices.length)];
         data.index = index;
         data.date = today;
         data.usedIndices.push(index);
         localStorage.setItem('wordOfDay', JSON.stringify(data));
+        console.log("Neues Wort ausgewählt:", words[index]);
     }
 
     // Wort anzeigen
@@ -50,8 +59,13 @@ fetch('words.json')
     document.getElementById('meaning').textContent = words[index].meaning;
     document.getElementById('example').textContent = words[index].example;
 
+    // Debug-Ausgabe auf der Seite
+    document.getElementById('debug').textContent = `Index: ${index}, Datum: ${today}, benutzte Indizes: ${data.usedIndices.join(', ')}`;
   })
-  .catch(err => console.error("Fehler beim Laden der Wörter:", err));
+  .catch(err => {
+    console.error("Fehler beim Laden der JSON:", err);
+    document.getElementById('word').textContent = "Fehler beim Laden der Wörter!";
+  });
 </script>
 </body>
 </html>
