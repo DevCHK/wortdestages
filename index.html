@@ -19,45 +19,78 @@
 
   body {
     font-family: Arial, sans-serif;
-    max-width: 600px;
+    max-width: 700px;
     margin: 2em auto;
     background-color: var(--bg-color);
     color: var(--text-color);
-    padding: 0 1em;
+    padding: 0 1.5em;
+    line-height: 1.6;
   }
 
   h1 {
     text-align: center;
+    font-size: 2.2em;
+    margin-bottom: 1em;
   }
 
   #word {
-    font-size: 2em;
+    font-size: 2.5em;
     font-weight: bold;
     margin-top: 1em;
     color: var(--accent-color);
+    text-align: center;
   }
 
   .label {
     font-weight: bold;
-    margin-top: 1em;
+    margin-top: 1.2em;
+    font-size: 1.1em;
   }
 
   #meaning, #example {
-    margin-top: 0.3em;
+    margin-top: 0.5em;
+    font-size: 1.1em;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2em;
+    }
+    #word {
+      font-size: 2em;
+    }
+    .label, #meaning, #example {
+      font-size: 1em;
+    }
+    body {
+      margin: 1.5em;
+      padding: 0 1em;
+    }
   }
 
   @media (max-width: 480px) {
+    h1 {
+      font-size: 1.8em;
+    }
     #word {
-      font-size: 1.6em;
+      font-size: 1.7em;
+    }
+    .label {
+      font-size: 0.95em;
+    }
+    #meaning, #example {
+      font-size: 0.95em;
     }
     body {
       margin: 1em;
+      padding: 0 0.8em;
     }
   }
 </style>
 </head>
 <body>
 <h1>Wort des Tages</h1>
+
 <div id="word"></div>
 
 <div class="label">Bedeutung:</div>
@@ -72,7 +105,14 @@ fetch('words.json')
   .then(words => {
     const today = new Date().toISOString().split('T')[0];
     const stored = localStorage.getItem('wordOfDay');
-    const data = stored ? JSON.parse(stored) : { date: "", usedIndices: [] };
+    let data = stored ? JSON.parse(stored) : { date: "", usedIndices: [], jsonLength: words.length };
+
+    // Prüfen, ob JSON sich geändert hat
+    if (data.jsonLength !== words.length) {
+      data.usedIndices = [];
+      data.date = "";
+      data.jsonLength = words.length;
+    }
 
     let index;
     if (data.date === today) {
